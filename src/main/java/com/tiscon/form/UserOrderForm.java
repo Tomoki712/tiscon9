@@ -55,6 +55,10 @@ public class UserOrderForm {
     @NotNull
     private boolean washingMachineInstallation;
 
+    private String month;
+
+    private String day;
+
     public String getCustomerName() {
         return customerName;
     }
