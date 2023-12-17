@@ -84,6 +84,15 @@
           <td><span th:text="*{newAddress}"></span></td>
           <input type="hidden" name="newAddress" id="newAddress" th:value="*{newAddress}"/>
         </tr>
+        <tr>
+          <th>引っ越し予定日</th>
+          <td>
+            <span th:text="*{month}" />
+          <input type="hidden" name="month" id="month" th:value="*{month}"/>月
+            <span th:text="*{day}" />日
+          </td>
+          <input type="hidden" name="day" id="day" th:value="*{day}"/>
+        </tr>
         </tbody>
       </table>
     </div>
