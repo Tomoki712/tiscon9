@@ -52,6 +52,12 @@ public class EstimateDao {
         return resultNum;
     }
 
+    // public List<Customer> searchCustomer(Customer customer) {
+    //     String sql = "SELECT *FROM CUSTOMER WHERE CUSTOMER_NAME=:customerName and TEL=:tel and EMAIL=:email" ;
+    //     return parameterJdbcTemplate.query(sql,
+    //             BeanPropertyRowMapper.newInstance(Customer.class));
+    // }
+
     /**
      * オプションサービス_顧客テーブルに登録する。
      *

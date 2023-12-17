@@ -171,4 +171,21 @@ public class EstimateController {
         return "complete";
     }
 
+    @GetMapping("result")
+    String result(Model model){
+        if (!model.containsAttribute("userOrderForm")) {
+            model.addAttribute("userOrderForm", new UserOrderForm());
+        }
+
+        model.addAttribute("prefectures", estimateDAO.getAllPrefectures());
+        return "search";
+      
+      }
+
+    //   @PostMapping(value = "submit", params = "search")
+    //   String search(Model model){
+    //     return "searchresult";
+      
+    //   }
+
 }
