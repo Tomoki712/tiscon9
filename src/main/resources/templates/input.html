@@ -27,7 +27,7 @@
           <label for="customerName">氏名</label>
           <input type="text" id="customerName" name="customerName" th:field="*{customerName}" class="form-control" value="山田太郎"/>
           <ul th:if="${#fields.hasErrors('customerName')}">
-            <li th:each="err : ${#fields.errors('customerName')}" th:text="${err}"></li>
+            <li th:each="err : ${#fields.errors('customerName')}" th:text="${err}" color:"red"></li>
           </ul>
         </div>
         <div class="form-group">
@@ -41,7 +41,9 @@
           <label for="email">連絡先メールアドレス</label>
           <input type="text" id="email" name="email" th:field="*{email}" class="form-control" value="test@test.com"/>
           <ul th:if="${#fields.hasErrors('email')}">
-            <li th:each="err : ${#fields.errors('email')}" th:text="${err}"></li>
+            <font color="red">
+              <li th:each="err : ${#fields.errors('email')}" th:text="${err}" color="red"></li>
+            </font>
           </ul>
         </div>
         <div class="sub-title">集荷元・お届け先</div>

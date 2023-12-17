@@ -37,11 +37,18 @@ public class EstimateDao {
      * @return 登録件数
      */
     public int insertCustomer(Customer customer) {
-        String sql = "INSERT INTO CUSTOMER(OLD_PREFECTURE_ID, NEW_PREFECTURE_ID, CUSTOMER_NAME, TEL, EMAIL, OLD_ADDRESS, NEW_ADDRESS)"
-                + " VALUES(:oldPrefectureId, :newPrefectureId, :customerName, :tel, :email, :oldAddress, :newAddress)";
+        // String sql = "INSERT INTO CUSTOMER(OLD_PREFECTURE_ID, NEW_PREFECTURE_ID, CUSTOMER_NAME, TEL, EMAIL, OLD_ADDRESS, NEW_ADDRESS)"
+        //         + " VALUES(:oldPrefectureId, :newPrefectureId, :customerName, :tel, :email, :oldAddress, :newAddress)";
+        String sql = 
+        "INSERT INTO CUSTOMER(OLD_PREFECTURE_ID, NEW_PREFECTURE_ID, CUSTOMER_NAME, TEL, EMAIL, OLD_ADDRESS, NEW_ADDRESS)"
+        +"select * from ( values(:oldPrefectureId, :newPrefectureId, :customerName, :tel, :email, :oldAddress, :newAddress) )"
+        +"AS new(OLD_PREFECTURE_ID, NEW_PREFECTURE_ID, CUSTOMER_NAME, TEL, EMAIL, OLD_ADDRESS, NEW_ADDRESS)"
+        + "WHERE NOT EXISTS(SELECT * FROM CUSTOMER WHERE tel=new.TEL and new_Prefecture_Id=new.new_Prefecture_Id and new_address=new.new_address)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int resultNum = parameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(customer), keyHolder);
-        customer.setCustomerId(keyHolder.getKey().intValue());
+        if (resultNum>=1){
+            customer.setCustomerId(keyHolder.getKey().intValue());
+        }
         return resultNum;
     }
 

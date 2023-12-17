@@ -45,22 +45,27 @@ public class EstimateService {
     public void registerOrder(UserOrderDto dto) {
         Customer customer = new Customer();
         BeanUtils.copyProperties(dto, customer);
-        estimateDAO.insertCustomer(customer);
+        int num = estimateDAO.insertCustomer(customer);
 
-        if (dto.getWashingMachineInstallation()) {
-            CustomerOptionService washingMachine = new CustomerOptionService();
-            washingMachine.setCustomerId(customer.getCustomerId());
-            washingMachine.setServiceId(OptionalServiceType.WASHING_MACHINE.getCode());
-            estimateDAO.insertCustomersOptionService(washingMachine);
+        if(num>=1){
+            if (dto.getWashingMachineInstallation()) {
+                CustomerOptionService washingMachine = new CustomerOptionService();
+                washingMachine.setCustomerId(customer.getCustomerId());
+                washingMachine.setServiceId(OptionalServiceType.WASHING_MACHINE.getCode());
+                estimateDAO.insertCustomersOptionService(washingMachine);
+            }
+
+            List<CustomerPackage> packageList = new ArrayList<>();
+
+            packageList.add(new CustomerPackage(customer.getCustomerId(), PackageType.BOX.getCode(), dto.getBox()));
+            packageList.add(new CustomerPackage(customer.getCustomerId(), PackageType.BED.getCode(), dto.getBed()));
+            packageList.add(new CustomerPackage(customer.getCustomerId(), PackageType.BICYCLE.getCode(), dto.getBicycle()));
+            packageList.add(new CustomerPackage(customer.getCustomerId(), PackageType.WASHING_MACHINE.getCode(), dto.getWashingMachine()));
+            estimateDAO.batchInsertCustomerPackage(packageList);
+
         }
-
-        List<CustomerPackage> packageList = new ArrayList<>();
-
-        packageList.add(new CustomerPackage(customer.getCustomerId(), PackageType.BOX.getCode(), dto.getBox()));
-        packageList.add(new CustomerPackage(customer.getCustomerId(), PackageType.BED.getCode(), dto.getBed()));
-        packageList.add(new CustomerPackage(customer.getCustomerId(), PackageType.BICYCLE.getCode(), dto.getBicycle()));
-        packageList.add(new CustomerPackage(customer.getCustomerId(), PackageType.WASHING_MACHINE.getCode(), dto.getWashingMachine()));
-        estimateDAO.batchInsertCustomerPackage(packageList);
+        
+        
     }
 
     /**
